@@ -28,26 +28,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun MainScreen() {
-    val navController = rememberNavController()
-    Scaffold(
-        topBar = {
-            CustomToolbar(
-                onProfileClick = { navController.navigate("profile") },
-                onSearchClick = { /* Handle search click */ }
-            )
-        },
-        bottomBar = {
-            BottomNavigationBar(navController)
-        }
-    ) {
-        NavHost(navController, startDestination = "home") {
-            composable("home") { HomeScreen() }
-            composable("basket") { BasketScreen() }
-            composable("chat") { ChatScreen() }
-            composable("info") { InfoScreen() }
-            composable("profile") { ProfileScreen() }
-        }
-    }
-}
