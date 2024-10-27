@@ -3,45 +3,51 @@ package com.example.fishshop
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.fishshop.ui.theme.FishShopTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.fishshop.ui.theme.MyApplicationTheme
+import com.example.fishshop.button.BottomNavigationBar
+import com.example.fishshop.screen.BasketScreen
+import com.example.fishshop.screen.ChatScreen
+import com.example.fishshop.screen.HomeScreen
+import com.example.fishshop.screen.InfoScreen
+import com.example.fishshop.screen.ProfileScreen
+import com.example.fishshop.toolbar.CustomToolbar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            FishShopTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            MyApplicationTheme {
+                MainScreen()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FishShopTheme {
-        Greeting("Android")
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = {
+            CustomToolbar(
+                onProfileClick = { navController.navigate("profile") },
+                onSearchClick = { /* Handle search click */ }
+            )
+        },
+        bottomBar = {
+            BottomNavigationBar(navController)
+        }
+    ) {
+        NavHost(navController, startDestination = "home") {
+            composable("home") { HomeScreen() }
+            composable("basket") { BasketScreen() }
+            composable("chat") { ChatScreen() }
+            composable("info") { InfoScreen() }
+            composable("profile") { ProfileScreen() }
+        }
     }
 }

@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)  // Поддержка предпросмотра в Android Studio
     implementation(libs.androidx.material3)  // Material Design 3 для Jetpack Compose
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
-
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.runtime.livedata) // Основная библиотека Room
     kapt(libs.androidx.room.compiler) // Компилятор Room для аннотаций
