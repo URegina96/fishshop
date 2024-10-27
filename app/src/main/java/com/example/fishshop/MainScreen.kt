@@ -19,7 +19,6 @@ import com.example.fishshop.product.Product
 import com.example.fishshop.product.ProductDetailScreen
 import com.example.fishshop.screen.*
 import com.example.fishshop.toolbar.CustomToolbar
-
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -81,10 +80,12 @@ fun MainScreen() {
                 val details = backStackEntry.arguments?.getString("details") ?: ""
                 InfoDetailScreen(navController = navController, itemName = name, itemDetails = details)
             }
-            composable("profile") { ProfileScreen() }
+            composable("profile") { UserProfileScreen(navController = navController) }
             composable("order_address") { OrderAddressScreen(navController) }
             composable("contact_number") { ContactNumberScreen(navController) }
             composable("order_complete") { OrderCompleteScreen(navController) }
         }
     }
 }
+
+
