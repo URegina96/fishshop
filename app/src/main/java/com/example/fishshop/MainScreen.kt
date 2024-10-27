@@ -23,6 +23,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.fishshop.basket.BasketViewModel
+import com.example.fishshop.basket.ContactNumberScreen
+import com.example.fishshop.basket.OrderAddressScreen
+import com.example.fishshop.basket.OrderCompleteScreen
 import com.example.fishshop.button.BottomNavigationBar
 import com.example.fishshop.product.Product
 import com.example.fishshop.product.ProductDetailScreen
@@ -85,6 +88,9 @@ fun MainScreen() {
             composable("chat") { ChatScreen() }
             composable("info") { InfoScreen() }
             composable("profile") { ProfileScreen() }
+            composable("order_address") { OrderAddressScreen(navController) }
+            composable("contact_number") { ContactNumberScreen(navController) }
+            composable("order_complete") { OrderCompleteScreen(navController) }
         }
     }
 }
