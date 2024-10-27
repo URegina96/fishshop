@@ -21,11 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.fishshop.basket.BasketViewModel
 import com.example.fishshop.product.Product
 import com.example.fishshop.product.ProductItem
 
 @Composable
-fun HomeScreen(navController: NavController, products: List<Product>, modifier: Modifier = Modifier) {
+fun HomeScreen(navController: NavController, products: List<Product>, basketViewModel: BasketViewModel, modifier: Modifier = Modifier) {
     val infiniteImages = remember { List(1000) { products[it % products.size] } }
 
     Column(
@@ -54,7 +55,10 @@ fun HomeScreen(navController: NavController, products: List<Product>, modifier: 
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(100.dp)
-                        .clickable { /* Handle image click if needed */ }
+                        .clickable {
+                            val route = "product_detail/${product.name}/${product.price}/${product.imageRes}"
+                            navController.navigate(route)
+                        }
                 )
             }
         }
@@ -78,6 +82,8 @@ fun HomeScreen(navController: NavController, products: List<Product>, modifier: 
         ) {
             items(products) { product ->
                 ProductItem(product = product, onClick = {
+                    basketViewModel.addToBasket(product)
+                }, onImageClick = {
                     val route = "product_detail/${product.name}/${product.price}/${product.imageRes}"
                     navController.navigate(route)
                 })

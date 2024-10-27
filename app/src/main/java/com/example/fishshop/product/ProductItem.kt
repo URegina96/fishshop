@@ -18,11 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ProductItem(product: Product, onClick: () -> Unit) {
+fun ProductItem(product: Product, onClick: () -> Unit, onImageClick: () -> Unit) {
     Column(
         modifier = Modifier
             .background(Color(0xFF87CEEB))
-            .clickable(onClick = onClick)
             .padding(8.dp)
     ) {
         Image(
@@ -32,6 +31,7 @@ fun ProductItem(product: Product, onClick: () -> Unit) {
             modifier = Modifier
                 .size(180.dp)
                 .background(Color.White)
+                .clickable(onClick = onImageClick)
         )
         Text(
             text = product.name,

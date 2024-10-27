@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.fishshop.basket.BasketViewModel
 import com.example.fishshop.button.BottomNavigationBar
 import com.example.fishshop.product.Product
 import com.example.fishshop.product.ProductDetailScreen
@@ -39,6 +41,7 @@ fun MainScreen() {
         Product("Product 2", 20.00, android.R.drawable.ic_menu_gallery),
         Product("Product 3", 30.00, android.R.drawable.ic_menu_manage)
     )
+    val basketViewModel = remember { BasketViewModel() }
 
     Scaffold(
         topBar = {
@@ -53,7 +56,7 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(navController, startDestination = "home", modifier = Modifier.padding(innerPadding)) {
             composable("home") {
-                HomeScreen(navController = navController, products = products)
+                HomeScreen(navController = navController, products = products, basketViewModel = basketViewModel)
             }
             composable(
                 "product_detail/{name}/{price}/{imageRes}",
@@ -67,16 +70,21 @@ fun MainScreen() {
                 val price = backStackEntry.arguments?.getFloat("price") ?: 0f
                 val imageRes = backStackEntry.arguments?.getInt("imageRes") ?: 0
                 val product = Product(name, price.toDouble(), imageRes)
-                ProductDetailScreen(navController = navController, product = product)
+                ProductDetailScreen(navController = navController, product = product, basketViewModel = basketViewModel)
             }
-            composable("basket") { BasketScreen() }
+            composable("basket") {
+                BasketScreen(
+                    navController = navController,
+                    basketItems = basketViewModel.basketItems,
+                    totalPrice = basketViewModel.getTotalPrice(),
+                    onRemove = { basketItem -> basketViewModel.removeFromBasket(basketItem.product) },
+                    onIncrease = { basketItem -> basketViewModel.increaseQuantity(basketItem) },
+                    onDecrease = { basketItem -> basketViewModel.decreaseQuantity(basketItem) }
+                )
+            }
             composable("chat") { ChatScreen() }
             composable("info") { InfoScreen() }
-            composable("profile") {
-                ProfileScreen()
-                // Ensure "home" screen is reset when returning from profile
-                navController.popBackStack("home", inclusive = false)
-            }
+            composable("profile") { ProfileScreen() }
         }
     }
 }
